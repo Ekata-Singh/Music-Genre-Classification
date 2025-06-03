@@ -21,3 +21,5 @@ Convolutional Neural Network (CNN) – Used for image-based classification on sp
 **Deployment:**
 Streamlit – For building the interactive web interface.
 Pickle / Joblib – For saving and loading the trained model.
+
+**Dataset:** [Dataset]https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification?resource=download
