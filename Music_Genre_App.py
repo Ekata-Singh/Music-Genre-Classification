@@ -4,13 +4,17 @@ import numpy as np
 import librosa
 from matplotlib import pyplot
 import numpy as np
-from tensorflow.image import resize
 
 #Function
 @st.cache_resource()
 def load_model():
-  model = tf.keras.models.load_model("Trained_model.keras")
-  return model
+    model = tf.keras.models.load_model("Trained_model.h5", compile=False)
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(),
+        loss='categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    return model
 
 
 # Load and preprocess audio data
@@ -42,7 +46,7 @@ def load_and_preprocess_data(file_path, target_shape=(150, 150)):
         mel_spectrogram = librosa.feature.melspectrogram(y=chunk, sr=sample_rate)
                     
                 #mel_spectrogram = librosa.feature.melspectrogram(y=audio_data, sr=sample_rate)
-        mel_spectrogram = resize(np.expand_dims(mel_spectrogram, axis=-1), target_shape)
+        mel_spectrogram = tf.image.resize(np.expand_dims(mel_spectrogram, axis=-1), target_shape)
         data.append(mel_spectrogram)
     
     return np.array(data)
@@ -147,3 +151,4 @@ elif(app_mode=="Prediction"):
         st.balloons()
         label = ['blues', 'classical','country','disco','hiphop','jazz','metal','pop','reggae','rock']
         st.markdown("**:blue[Model Prediction:] It's a  :red[{}] music**".format(label[result_index]))
+
